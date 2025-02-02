@@ -6,8 +6,12 @@ import Link from 'next/link';
 const SearchFormReset = () => {
   const reset = () => {
     const form = document.querySelector('.search-form') as HTMLFormElement;
+    const input = document.querySelector('.search-input') as HTMLInputElement;
 
-    if (form) form.reset;
+    if (form) {
+      form.reset;
+      input.value = '';
+    }
   };
   return (
     <button type="reset" onClick={reset}>
