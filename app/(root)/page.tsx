@@ -1,16 +1,8 @@
-import StartupCard from '@/components/StartupCard';
+import StartupCard, { StartupCardType } from '@/components/StartupCard';
 import SearchForm from '../../components/SearchForm';
-
-type StartupCardType = {
-  _createdAt: string;
-  views: number;
-  author: { _id: number; name: string };
-  _id: number;
-  description: string;
-  category: string;
-  title: string;
-  image: string;
-};
+import { client } from '@/sanity/lib/client';
+import { STARTUPS_QUERY } from '@/sanity/lib/queries';
+import { log } from 'console';
 
 export default async function Home({
   searchParams,
@@ -18,19 +10,21 @@ export default async function Home({
   searchParams: Promise<{ query?: string }>;
 }) {
   const query = (await searchParams).query;
-  const posts = [
-    {
-      _createdAt: new Date().toISOString(),
-      views: 69,
-      author: { _id: 1, name: 'Ray' },
-      _id: 1,
-      description: 'Dummy Desc',
-      category: 'Robots',
-      title: 'The Last Knight',
-      image:
-        'https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/24390847/last_knight_optimus.jpeg?quality=90&strip=all&crop=23.501263423879%2C0%2C54.200884396715%2C100&w=828',
-    },
-  ];
+  const posts = await client.fetch(STARTUPS_QUERY);
+
+  // const posts = [
+  //   {
+  //     _createdAt: new Date().toISOString(),
+  //     views: 69,
+  //     author: { _id: 1, name: 'Ray' },
+  //     _id: 1,
+  //     description: 'Dummy Desc',
+  //     category: 'Robots',
+  //     title: 'The Last Knight',
+  //     image:
+  //       'https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/24390847/last_knight_optimus.jpeg?quality=90&strip=all&crop=23.501263423879%2C0%2C54.200884396715%2C100&w=828',
+  //   },
+  // ];
   return (
     <>
       <section className="pink_container">
