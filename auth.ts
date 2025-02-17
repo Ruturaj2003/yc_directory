@@ -13,9 +13,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return false;
       }
 
-      const existingUser = await client.fetch(AUTHOR__BY_GITHUB_ID_QUERY, {
-        id: profile.id,
-      });
+      const existingUser = await client
+        .withConfig({ useCdn: false })
+        .fetch(AUTHOR__BY_GITHUB_ID_QUERY, {
+          id: profile.id,
+        });
 
       if (!existingUser) {
         await writeClient.create({
@@ -34,9 +36,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
     async jwt({ token, account, profile }) {
       if (account && profile) {
-        const user = await client.fetch(AUTHOR__BY_GITHUB_ID_QUERY, {
-          id: profile.id,
-        });
+        const user = await client
+          .withConfig({ useCdn: false })
+          .fetch(AUTHOR__BY_GITHUB_ID_QUERY, {
+            id: profile.id,
+          });
 
         if (user) {
           token.id = user._id; // Ensure `user` is valid before accessing `_id`
